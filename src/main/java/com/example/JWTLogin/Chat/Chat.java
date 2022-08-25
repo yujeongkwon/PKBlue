@@ -1,4 +1,4 @@
-package com.example.JWTLogin.domain;
+package com.example.JWTLogin.Chat;
 
 import lombok.Builder;
 import lombok.Getter;

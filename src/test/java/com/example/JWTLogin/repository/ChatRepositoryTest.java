@@ -1,6 +1,7 @@
 package com.example.JWTLogin.repository;
 
-import com.example.JWTLogin.domain.Chat;
+import com.example.JWTLogin.Chat.Chat;
+import com.example.JWTLogin.Chat.ChatRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ import java.util.ArrayList;
 @SpringBootTest
 public class ChatRepositoryTest {
 
-    @Autowired ChatRepository chatRepository;
+    @Autowired
+    ChatRepository chatRepository;
 
     @Test
     @Transactional
@@ -37,18 +39,44 @@ public class ChatRepositoryTest {
         System.out.println("chat.getChatId() = " + chat.getChatId());
     }
 
-//    @Test
-//    @Transactional,
-//    @Rollback(false)
-//    void id로찾기() {
-//        int a = chatRepository.submit(123L, 234L, "냠");
-//        System.out.println("a = " + a);
-//    }
+    @Test
+    @Transactional
+    @Rollback(false)
+    void id로찾기() {
+        ArrayList<Chat> chat = chatRepository.findChatById( 123L , 234L, 3);
 
-//    @Test
-//    void findChatByRecent() {
-//    }
-//
+        for(Chat c:chat){
+            System.out.println("c.getChatContent() = " + c.getChatContent());
+        }
+    }
+
+    @Test
+    @Transactional
+    @Rollback(false)
+    void 최근대화반환() {
+        Chat chat =  Chat.builder()
+                .fromId(123L)
+                .toId(234L)
+                .chatContent("안녕 유졍")
+                .chatTime(LocalDateTime.now())
+                .build();
+
+        chatRepository.save(chat);
+
+
+        chatRepository.submit(123L,234L, "머해 뉴정");
+        for (int i=0 ; i <10; i++){
+            chatRepository.submit( chat.getFromId() , chat.getToId(), "안농");
+        }
+
+        ArrayList<Chat> inchat = chatRepository.findChatByRecent(123L,234L,5);
+
+        for(Chat c:inchat){
+            System.out.println("c.getChatContent() = " + c.getChatContent());
+        }
+
+    }
+
     @Test
     @Transactional
     @Rollback(false)
@@ -71,6 +99,8 @@ public class ChatRepositoryTest {
 
         ArrayList<Chat> inchat = chatRepository.findChatById(123L,234L,1);
 
+        System.out.println("inchat = " + inchat);
+        
         for(Chat c:inchat){
             System.out.println("c.getChatContent() = " + c.getChatContent());
         }
