@@ -36,7 +36,7 @@ public class FollowService {
     // 팔로워 조회
     @Transactional
     public List<FollowDto> getFollower(long profileId, long loginId) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("SELECT m.id, m.nickname, m.profile_img_url, ");
         sb.append("if ((SELECT 1 FROM follow WHERE from_member_id = ? AND to_member_id = m.id), TRUE, FALSE) AS followState, ");
         sb.append("if ((?=m.id), TRUE, FALSE) AS loginUser ");
@@ -57,7 +57,7 @@ public class FollowService {
     //팔로잉 조회
     @Transactional
     public List<FollowDto> getFollowing(long profileId, long loginId) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("SELECT m.id, m.nickname, m.profile_img_url, ");
         sb.append("if ((SELECT 1 FROM follow WHERE from_member_id = ? AND to_member_id = m.id), TRUE, FALSE) AS followState, ");
         sb.append("if ((?=m.id), TRUE, FALSE) AS loginUser ");
@@ -75,6 +75,5 @@ public class FollowService {
         List<FollowDto> followDtoList = result.list(query, FollowDto.class);
         return followDtoList;
     }
-
 
 }
