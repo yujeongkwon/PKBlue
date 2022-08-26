@@ -1,15 +1,16 @@
 package com.example.JWTLogin.handler;
 
 import java.util.Map;
-public class CustomValidationException extends RuntimeException {
+
+public class CustomValidationApiException extends RuntimeException {
 
     private Map<String, String> errorMap;
 
-    public CustomValidationException(String message) {
+    public CustomValidationApiException(String message) {
         super(message);
     }
 
-    public CustomValidationException(String message, Map<String, String> errorMap) {
+    public CustomValidationApiException(String message, Map<String, String> errorMap) {
         super(message);
         this.errorMap = errorMap;
     }

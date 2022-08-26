@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/member/**").hasRole("USER")
                 .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
@@ -47,3 +47,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣는다
     }
 }
+// @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//
+//        http.authorizeRequests().antMatchers("/login").permitAll()
+//                .antMatchers("/users/**", "/settings/**").hasAuthority("USER")
+//                .hasAnyAuthority("Admin")
+//                .anyRequest().authenticated()
+//
+//        http.headers().frameOptions().sameOrigin();
+//
+//        return http.build();
+//    }
+//
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**");
+//    }
