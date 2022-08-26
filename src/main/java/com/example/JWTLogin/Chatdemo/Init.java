@@ -1,4 +1,4 @@
-package com.example.JWTLogin.Chat;
+package com.example.JWTLogin.Chatdemo;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import java.awt.print.Book;
 import java.time.LocalDateTime;
 
 @Component
@@ -35,6 +34,7 @@ public class Init {
                     .toId(234L)
                     .chatContent("안녕 유졍")
                     .chatTime(LocalDateTime.now())
+                    .chatRead(0)
                     .build();
 
             em.persist(chat);

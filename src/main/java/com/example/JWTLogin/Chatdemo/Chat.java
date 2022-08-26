@@ -1,4 +1,4 @@
-package com.example.JWTLogin.Chat;
+package com.example.JWTLogin.Chatdemo;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -29,12 +29,16 @@ public class Chat {
     @Column
     private LocalDateTime chatTime;
 
+    @Column
+    private int chatRead;
+
     @Builder
-    public Chat(Long chatId,Long fromId, Long toId, String chatContent, LocalDateTime chatTime) {
+    public Chat(Long chatId,Long fromId, Long toId, String chatContent, LocalDateTime chatTime, int chatRead) {
         this.chatId = chatId;
         this.fromId = fromId;
         this.toId = toId;
         this.chatContent = chatContent;
         this.chatTime = chatTime;
+        this.chatRead = chatRead;
     }
 }

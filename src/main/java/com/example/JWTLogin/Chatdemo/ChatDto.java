@@ -1,10 +1,8 @@
-package com.example.JWTLogin.Chat;
+package com.example.JWTLogin.Chatdemo;
 
 import lombok.*;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Builder
 @AllArgsConstructor

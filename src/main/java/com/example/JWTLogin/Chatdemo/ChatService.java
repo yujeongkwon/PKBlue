@@ -1,4 +1,4 @@
-package com.example.JWTLogin.Chat;
+package com.example.JWTLogin.Chatdemo;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +35,16 @@ public class ChatService {
          chatRepository.submit( fromId , toId, chatContent);
     }
 
+    //다읽음 처리
+    @Transactional
+    public void readChat(long fromId, long toId){
+        chatRepository.readChat(fromId , toId);
+    }
 
+    //안읽은 챗 개수
+    @Transactional
+    public void getAllUnreadChat(long userId){
+        chatRepository.getAllUnreadChat(userId);
+    }
 
 }

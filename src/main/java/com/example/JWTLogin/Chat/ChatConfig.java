@@ -1,5 +1,6 @@
 package com.example.JWTLogin.Chat;
 
+import com.example.JWTLogin.Chat.StompHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
