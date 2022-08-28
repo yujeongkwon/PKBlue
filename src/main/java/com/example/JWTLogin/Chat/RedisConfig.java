@@ -23,9 +23,9 @@ public class RedisConfig {
 
     @Value("${spring.redis.port}")
     private int redisPort;
-
-    @Value("${spring.redis.password}")
-    private String redisPassword;
+//
+//    @Value("${spring.redis.password}")
+//    private String redisPassword;
 
     private RedisStandaloneConfiguration redisStandaloneConfiguration;
     private LettuceConnectionFactory lettuceConnectionFactory;
@@ -43,12 +43,11 @@ public class RedisConfig {
         redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(redisHost);
         redisStandaloneConfiguration.setPort(redisPort);
-        redisStandaloneConfiguration.setPassword(redisPassword);
         lettuceConnectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration);
         return lettuceConnectionFactory;
     }
 
-    //Redis에 pub/sub 메시지 처리
+    //Redis 에 pub/sub 된 메시지 처리를 위한 리스너 설정
     @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory,
                                                                        MessageListenerAdapter listenerAdapter,

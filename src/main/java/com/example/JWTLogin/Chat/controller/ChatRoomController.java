@@ -5,12 +5,17 @@ import com.example.JWTLogin.Chat.domain.ChatRoom;
 import com.example.JWTLogin.Chat.dto.ChatRoomResponseDto;
 import com.example.JWTLogin.Chat.service.ChatMessageService;
 import com.example.JWTLogin.Chat.service.ChatRoomService;
+import com.example.JWTLogin.domain.Member;
+import com.example.JWTLogin.repository.MemberRepository;
+import com.example.JWTLogin.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,13 +25,18 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
+    private final MemberService memberService;
 
-    //모든 채팅방 목록 반환 -> 나중에 member가 구독한 채팅방만 반환으로 바꾸기
+    // member가 구독한 채팅방만 반환으로 바꾸기
     @GetMapping("/rooms")
     @ResponseBody
-    public List<ChatRoom> room(){
-        return chatRoomService.findAllRooms();
+    public ArrayList<ChatRoom> room(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email =  authentication.getName();
+        Member fromMember = memberService.findByEmail(email); // 현재 본인
+        return chatRoomService.findAllRooms(fromMember.getId());
     }
+    
 
     //채팅방 생성
     @PostMapping("/room/{otherNickName}")

@@ -26,5 +26,7 @@ public class ChatMessage {
 
     private Long roomId;
 
+    @Column
+    private int chatRead;
 
 }

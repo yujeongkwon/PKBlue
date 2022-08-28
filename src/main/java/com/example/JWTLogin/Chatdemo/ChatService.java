@@ -10,7 +10,8 @@ import java.util.ArrayList;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ChatService {
+public class
+ChatService {
 
     private final EntityManager em;
     private final ChatRepository chatRepository;

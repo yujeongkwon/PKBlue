@@ -1,9 +1,6 @@
 package com.example.JWTLogin.config.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -72,6 +69,18 @@ public class JwtTokenProvider {
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    public String checkJwtToken(String key) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(secretKey)
+                    .parseClaimsJws(key)
+                    .getBody();
+            String email = (String) claims.get("email");
+            return email;
+        } catch (Exception e) {
+            return "";
         }
     }
 }

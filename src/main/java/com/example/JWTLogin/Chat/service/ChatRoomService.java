@@ -2,6 +2,7 @@ package com.example.JWTLogin.Chat.service;
 
 import com.example.JWTLogin.Chat.domain.ChatRoom;
 import com.example.JWTLogin.Chat.dto.ChatRoomResponseDto;
+import com.example.JWTLogin.Chat.repository.ChatMessageRepository;
 import com.example.JWTLogin.Chat.repository.ChatRoomRepository;
 import com.example.JWTLogin.domain.Member;
 import com.example.JWTLogin.repository.MemberRepository;
@@ -10,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -19,10 +20,11 @@ import java.util.Optional;
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final MemberRepository memberRepository;
+    private final ChatMessageService chatMessageService;
 
-    //채팅방 전체 조회
-    public List<ChatRoom> findAllRooms() {
-        return chatRoomRepository.findAll();
+    // 현재 채팅방 조회
+    public ArrayList<ChatRoom> findAllRooms(long  memberID) {
+        return chatRoomRepository.findMyRooms(memberID);
     }
 
     //채팅방 생성
@@ -54,13 +56,16 @@ public class ChatRoomService {
     public ResponseEntity<ChatRoomResponseDto> getAvailableRoom(String otherNickName, String email) {
         Member loginMember = memberRepository.findByEmail(email);
         Member otherMember = memberRepository.findByNickname(otherNickName);
-        ChatRoom chatRoom = chatRoomRepository.findChatRoomByFromMemberIdAndToMemberId(loginMember.getNickname(),otherNickName);
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomByFromMemberIdAndToMemberId(loginMember.getId(),otherMember.getId());
 
-        if( chatRoom!= null)
+        if( chatRoom!= null) {
+            //채팅방 드가면 읽음처리
+            chatMessageService.readChat(otherMember.getId(),chatRoom.getRoomId());
+
             return ResponseEntity.status(200).body(ChatRoomResponseDto.builder()
                     .roomId(chatRoom.getRoomId())
                     .build());
-        else
+        }else
             chatRoom = createChatRoom(otherNickName,email);
             return ResponseEntity.status(200).body(ChatRoomResponseDto.builder()
                     .roomId(chatRoom.getRoomId())
