@@ -14,7 +14,7 @@ import static javax.persistence.EnumType.STRING;
 public class ChatMessage {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chat_message_id")
     private Long id;
 
@@ -24,7 +24,7 @@ public class ChatMessage {
 
     private String createdAt;
 
-    private String name;
+    private Long roomId;
 
 
 }

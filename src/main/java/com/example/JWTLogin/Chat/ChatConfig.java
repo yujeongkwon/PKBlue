@@ -26,9 +26,9 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     @Override   //Stomp 사용위한 Message Broker설정
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         //메세지 받을 때, 경로 설정 / messageBroker로 보냄   1:1
-        registry.enableSimpleBroker("/queue");
+        registry.enableSimpleBroker("/sub");    //메시지 발행요청
         //메세지 보낼 때, 경로 설정 /Broker로 보냄
-        registry.setApplicationDestinationPrefixes("/app");
+        registry.setApplicationDestinationPrefixes("/pub");     //메시지 구독요청
     }
 // StompHandler가 웹 소켓 앞단에서 token, 메시지, TYPE 등 체크할 수 있도록
     @Override

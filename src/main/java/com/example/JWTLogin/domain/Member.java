@@ -42,6 +42,7 @@ public class Member implements UserDetails {
     @Column(length = 1000)
     private String introduce;
 
+
     //프로필 사진
     private String profileImgUrl;
 

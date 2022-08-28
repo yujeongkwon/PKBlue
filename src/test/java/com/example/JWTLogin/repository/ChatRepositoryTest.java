@@ -1,7 +1,5 @@
 package com.example.JWTLogin.repository;
 
-import com.example.JWTLogin.Chat.domain.ChatRoom;
-import com.example.JWTLogin.Chat.repository.ChatRoomRepository;
 import com.example.JWTLogin.Chatdemo.Chat;
 import com.example.JWTLogin.Chatdemo.ChatRepository;
 import org.junit.jupiter.api.Test;
@@ -22,9 +20,6 @@ public class ChatRepositoryTest {
 
     @Autowired
     ChatRepository chatRepository;
-    
-    @Autowired
-    ChatRoomRepository chatRoomRepository;
     
     @Test
     @Transactional
@@ -113,12 +108,5 @@ public class ChatRepositoryTest {
 
     }
 
-    @Test
-    @Transactional
-    @Rollback(false)
-    void 읽음(){
-        ChatRoom chatRoom = new ChatRoom();
-//        chatRoomRepository.save(chatRoom);
-        System.out.println("chatRoom.getId() = " + chatRoom.getId());
-    }
+
 }
