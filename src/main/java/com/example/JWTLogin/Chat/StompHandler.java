@@ -2,9 +2,11 @@ package com.example.JWTLogin.Chat;
 
 import com.example.JWTLogin.Chat.domain.ChatMessage;
 import com.example.JWTLogin.Chat.domain.ChatRoom;
+import com.example.JWTLogin.Chat.domain.EnterInfo;
 import com.example.JWTLogin.Chat.repository.ChatRoomRepository;
 import com.example.JWTLogin.Chat.repository.EnterInfoRepository;
 import com.example.JWTLogin.Chat.service.ChatMessageService;
+import com.example.JWTLogin.Chat.service.ChatRoomService;
 import com.example.JWTLogin.config.security.JwtTokenProvider;
 import com.example.JWTLogin.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,7 @@ public class StompHandler implements ChannelInterceptor {
 
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
     private final MemberService memberService;
     private final EnterInfoRepository enterInfoRepository;
@@ -42,22 +44,17 @@ public class StompHandler implements ChannelInterceptor {
             jwtTokenProvider.validateToken(jwtToken);
         }
         else if (StompCommand.SUBSCRIBE == accessor.getCommand()) { // 채팅룸 구독요청
+            long roomId = Long.parseLong(chatMessageService.getRoomId(Optional.ofNullable(
+                            (String) message.getHeaders().get("simpDestination"))
+                    .orElse("Anonymous User")));
+
+            String sessionId = (String) message.getHeaders().get("simpSessionId");
+            enterInfoRepository.save(EnterInfo.builder()
+                    .sessionId(sessionId)
+                    .roomId(roomId)
+                    .build());
         }
         else if (StompCommand.DISCONNECT == accessor.getCommand()) {
-            String sessionId = (String) message.getHeaders().get("simpSessionId");
-            if(enterInfoRepository.findBySessionId(sessionId).isEmpty()){
-                return message;
-            }
-            long roomId = Long.parseLong(enterInfoRepository.findBySessionId(sessionId).get().getRoomId());
-            long loginMemberId = memberService.findByEmail(
-                    jwtTokenProvider.checkJwtToken(accessor.getFirstNativeHeader("token"))).getId();
-
-            //나갈때 서로 읽음처리해줌 ( 서로 대화하고 있는상황일 때 효과 )
-            ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-            if (chatRoom.getFromMember().getId() != loginMemberId)
-                chatMessageService.readChat(chatRoom.getFromMember().getId(),roomId);
-            else
-                chatMessageService.readChat(chatRoom.getToMember().getId(),roomId);
         }
 
         return message;

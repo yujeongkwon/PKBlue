@@ -46,7 +46,7 @@ public class ChatRoomController {
         return chatRoomService.createChatRoom(otherNickName,email);
     }
 
-    //채팅방 상세 조회 또는 생성
+    //채팅방 생성 또는 이미 방이있다면 배정
     @GetMapping("/room/{otherNickName}")
     public ResponseEntity<ChatRoomResponseDto> getRoomDetail(@PathVariable String otherNickName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

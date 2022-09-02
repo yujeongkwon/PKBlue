@@ -22,6 +22,6 @@ public class EnterInfo {
 
     private String sessionId;
 
-    private String roomId;
+    private long roomId;
 
 }

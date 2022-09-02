@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface EnterInfoRepository extends JpaRepository<EnterInfo, Long> {
 
     Optional<EnterInfo> findBySessionId(String sessionId);
+
     void deleteBySessionId(String sessionId);
 
 }
